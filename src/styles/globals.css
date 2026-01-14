@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-dark-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-dark-bg text-text-primary font-sans antialiased;
+  }
+
+  #root {
+    @apply min-h-screen;
+  }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  input[type='date']::-webkit-calendar-picker-indicator {
+    @apply cursor-pointer opacity-60 hover:opacity-100;
+    filter: invert(1);
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus,
+  button:focus {
+    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-dark-bg;
+  }
+
+  ::selection {
+    @apply bg-accent text-dark-bg;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-dark-surface;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-dark-border rounded-full hover:bg-text-muted;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-dark-surface rounded-lg border border-dark-border shadow-card;
+  }
+
+  .card-hover {
+    @apply transition-smooth hover:shadow-card-hover hover:-translate-y-0.5;
+  }
+
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-smooth focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-dark-bg disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent text-dark-bg hover:bg-accent-hover focus:ring-accent;
+  }
+
+  .btn-secondary {
+    @apply btn bg-dark-surface text-text-primary border border-dark-border hover:bg-dark-bg focus:ring-accent;
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-text-secondary hover:bg-dark-surface hover:text-text-primary focus:ring-accent;
+  }
+
+  .input {
+    @apply w-full px-4 py-2 bg-dark-surface border border-dark-border rounded-lg text-text-primary placeholder-text-muted transition-smooth focus:border-accent focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-dark-bg;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-text-secondary mb-1.5;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-success {
+    @apply badge bg-success/10 text-success;
+  }
+
+  .badge-warning {
+    @apply badge bg-warning/10 text-warning;
+  }
+
+  .badge-error {
+    @apply badge bg-error/10 text-error;
+  }
+
+  .badge-info {
+    @apply badge bg-accent/10 text-accent;
+  }
+
+  .skeleton {
+    @apply bg-dark-surface animate-shimmer rounded;
+  }
+
+  .divider {
+    @apply border-t border-dark-border;
+  }
+
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-8 md:py-12 lg:py-16;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent;
+  }
+
+  .glass {
+    @apply bg-dark-surface/80 backdrop-blur-sm border border-dark-border/50;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-left {
+    padding-left: env(safe-area-inset-left);
+  }
+
+  .safe-right {
+    padding-right: env(safe-area-inset-right);
+  }
+}

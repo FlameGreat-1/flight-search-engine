@@ -295,3 +295,208 @@ IMPLEMENTATION INSTRUCTIONS:
 AND INCLUDING OTHER RULES AND INSTRUCTIONS I MIGHT HAVE FORGOTTEN.
 
 SO MAKE SURE YOU STRICTLY STAY ALIGNED
+
+
+
+
+
+I HOPE YOU ARE STILL 100% ALIGNED ?
+
+
+
+Hello Emmanuel Ugochukwu,
+
+Congratulations on passing our initial screening!
+
+For this stage, we would like you to build a responsive Flight Search Engine. While you should look to Google Flights for utility, we are not looking for a visual clone. We encourage you to apply your own design taste and UX improvements to make the experience feel modern and intuitive.
+
+We recommend using the Amadeus Self-Service API (Test environment) as it provides the most robust dataset. However, you are free to use another API (like Sky-Scrapper) if you prefer, provided it supports the required data.
+
+Technical Requirements: To showcase your engineering, your submission must include at the very least:
+- Deliverables: Please provide the following within 4 days (max 16 work hours):
+- Search & Results: Inputs for Origin, Destination, Dates, etc. Feeding into a clear list of
+flight results.
+- Live Price Graph: A visual graph (using Recharts, D3, or similar) showing price trends.
+This must update in real-time as users apply filters.
+- Complex Filtering: Simultaneous filters (e.g., Stops + Price + Airline) that update both the flight list and the price graph instantly.
+- Responsive Design: Fully functional layouts for both mobile and desktop.
+
+Note: We encourage you to add extra polish or features beyond this list to demonstrate your product sense and attention to detail.
+
+Deliverables: Please provide the following within 4 days (max 16 work hours):
+1. GitHub Repository: Clean, well-structured code.
+2. Live Hosted Link: Accessible to anyone, you can use any service like Vercel, Netlify, etc.
+3. Loom Demo (3-4 mins): A brief walkthrough explaining your implementation and decision making.
+
+Good luck! We look forward to seeing what you build.
+
+
+
+YOU KNOW THIS ASSESSMENT IS VERY VERY CRITICAL AND WE HAVE TO BEAT ALOT OF PERSONS TO COME TOP.
+
+SO YOU ARE NOT GOING TO IMPLEMENT AS A JUNIOR-MID LEVEL ENGINEER.
+RATHER YOU ARE GOING TO DEPLOYMENT FULL EXPERTISE AND EXPERIENCE OF SENIOR ENGINEER WHILE STILL GUIDED.
+
+SO WE NEED TO SHOW SENIOR LEVEL PROFESSIONAL ENGINEERING BEST PRACTICES.
+
+
+
+IMPLEMENTATION INSTRUCTIONS:
+
+1. Make sure everything is accurate, functional and working perfectly without any issues or fail
+2. You have to ensure best practices, enterprise grade, industry standard and production ready.
+3. You must ensure best security practices
+4. You must ensure super performance and excellence. THAT MEANS IT HAS TO BE BLAZING-FAST AND PERFORMANT AND OTHER THINGS REQUIRED
+5. Avoid code duplication and repetions. There should be no redundancy and dead codes... THAT MEANS WE HAVE TO AVOID OVER-ENGINEERING AND AVOID IMPLEMENT WHAT WILL NOT BE USED OR NEEDED
+6. DO NOT LEAVE ANYTHING AS A PLACEHOLDER. I REPEAT, EVERYTHING MUST BE FULLY IMPLEMENTED.
+7. AND DO NOT INCLUDE UNNECCESSARY COMMENTS. ONLY WHAT'S NECCESSARY
+8. YOU HAVE TO STRICTLY MAKE SURE WE MEET UP WITH REQUIREMENTS BECAUSE THIS VERY CRITICAL
+9. ENSURE CORRECT FLOW AND INETERACTIONS ACCORDING TO  OUR ARCHITECTURE. NO CONFUSION AND CHILDISH STUFF
+
+AND INCLUDING OTHER RULES AND INSTRUCTIONS I MIGHT HAVE FORGOTTEN.
+
+SO MAKE SURE YOU STRICTLY STAY ALIGNED
+
+
+
+
+Color System (Simple & Safe)
+
+Primary Background:
+Very dark charcoal / near-black
+→ Used for the main app background
+
+Surface / Card Background:
+Slightly lighter dark tone
+→ Used for flight result cards, filter panels, and containers
+
+Primary Accent:
+Muted purple
+→ Used for:
+
+Primary buttons (Search, Apply filters)
+
+Active states (selected filters)
+
+Graph highlights
+
+Text Colors:
+
+Primary text: off-white
+
+Secondary text: soft gray
+
+Muted text: low-contrast gray for metadata (airline code, duration, stops)
+
+Borders / Dividers:
+Very subtle dark gray lines or low-opacity strokes
+
+Typography
+
+Font:
+Clean system font or modern sans-serif (Inter / system-ui)
+
+Hierarchy:
+
+Large, bold heading for the search header
+
+Medium-weight labels for filters
+
+Regular weight for flight details
+
+Slightly smaller, muted text for secondary information
+
+No decorative fonts. Readability first.
+
+Layout Structure
+1. Search Area
+
+Prominent at the top
+
+Inputs for:
+
+Origin
+
+Destination
+
+Dates
+
+Primary CTA button in accent color
+
+Compact, responsive layout:
+
+Horizontal on desktop
+
+Stacked on mobile
+
+2. Filters
+
+Placed beside or above results
+
+Includes:
+
+Stops
+
+Airlines
+
+Price range
+
+Filter changes update:
+
+Flight results list
+
+Price graph simultaneously
+
+Filters use:
+
+Toggles
+
+Sliders
+
+Checkboxes
+Minimal animation, instant feedback.
+
+3. Results List
+
+Card-based layout
+
+Each card shows:
+
+Airline
+
+Departure → Arrival
+
+Duration / Stops
+
+Price (clearly emphasized)
+
+Cards have:
+
+Subtle background contrast
+
+Soft rounded corners
+
+Clear spacing
+
+4. Price Graph
+
+Clean, minimal chart
+
+Uses accent color sparingly
+
+Updates reactively when filters change
+
+No heavy gridlines or decoration
+
+Interaction Principles
+
+Fast feedback: UI responds immediately to user actions
+
+No clutter: Only essential information visible
+
+Consistency: Same colors and spacing across components
+
+Accessibility: High contrast, readable text, tap-friendly controls
+
+
+REMEMBER THAT YOU CAN USE OTHER THINGS YOU THINK IS GOOD AND PROFESSIONAL TO COMPLIMENT THIS COLOR AND DESIGN TOO
