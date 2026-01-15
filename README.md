@@ -74,7 +74,7 @@ A modern, responsive flight search engine built with React, TypeScript, and the 
 
 \`\`\`bash
 # Clone repository
-git clone [your-repo-url]
+git clone https://github.com/FlameGreat-1/flight-search-engine
 
 # Install dependencies
 npm install
@@ -108,20 +108,6 @@ npm run test
 npm run type-check
 \`\`\`
 
-## 📁 Project Structure
-
-\`\`\`
-src/
-├── components/       # Reusable UI components
-├── features/         # Feature-specific logic
-├── hooks/           # Custom React hooks
-├── lib/             # Third-party integrations
-├── pages/           # Page components
-├── store/           # Zustand state management
-├── styles/          # Global styles
-├── types/           # TypeScript definitions
-└── utils/           # Utility functions
-\`\`\`
 
 ## 🎨 Design Decisions
 
@@ -147,12 +133,5 @@ src/
 - XSS protection
 - CORS handling
 
-## 📝 License
-
-MIT
-
-## 👤 Author
-
-[Your Name]
-- GitHub: [@yourusername]
-- LinkedIn: [Your LinkedIn]
+## 🚀 Live Demo
+[https://instantflightsearch.vercel.app](https://instantflightsearch.vercel.app)
