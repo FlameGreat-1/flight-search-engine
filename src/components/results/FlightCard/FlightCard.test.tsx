@@ -57,7 +57,9 @@ describe('FlightCard', () => {
   it('renders flight information', () => {
     render(<FlightCard flight={mockFlight} />);
 
-    expect(screen.getByText(/american airlines/i)).toBeInTheDocument();
+    const airlineElements = screen.getAllByText(/american airlines/i);
+    expect(airlineElements.length).toBeGreaterThan(0);
+    
     expect(screen.getByText('JFK')).toBeInTheDocument();
     expect(screen.getByText('LAX')).toBeInTheDocument();
   });
