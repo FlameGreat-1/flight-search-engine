@@ -14,6 +14,12 @@ import type {
   AmadeusLocationSearchRequest,
 } from './types';
 
+const pendingRequests = new Map<string, Promise<any>>();
+
+const getCacheKey = (prefix: string, params: any): string => {
+  return `${prefix}-${JSON.stringify(params)}`;
+};
+
 const getAccessToken = async (): Promise<string> => {
   const storedToken = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
   const tokenExpiry = localStorage.getItem(STORAGE_KEYS.TOKEN_EXPIRY);
@@ -44,74 +50,104 @@ const getAccessToken = async (): Promise<string> => {
 export const searchFlightOffers = async (
   params: AmadeusFlightSearchRequest
 ): Promise<AmadeusFlightOffersResponse> => {
-  const token = await getAccessToken();
+  const cacheKey = getCacheKey('flights', params);
 
-  const queryParams: Record<string, string | number | boolean> = {
-    originLocationCode: params.originLocationCode,
-    destinationLocationCode: params.destinationLocationCode,
-    departureDate: params.departureDate,
-    adults: params.adults,
-  };
-
-  if (params.returnDate) {
-    queryParams.returnDate = params.returnDate;
+  if (pendingRequests.has(cacheKey)) {
+    return pendingRequests.get(cacheKey);
   }
 
-  if (params.children && params.children > 0) {
-    queryParams.children = params.children;
-  }
+  const requestPromise = (async () => {
+    try {
+      const token = await getAccessToken();
 
-  if (params.infants && params.infants > 0) {
-    queryParams.infants = params.infants;
-  }
+      const queryParams: Record<string, string | number | boolean> = {
+        originLocationCode: params.originLocationCode,
+        destinationLocationCode: params.destinationLocationCode,
+        departureDate: params.departureDate,
+        adults: params.adults,
+      };
 
-  if (params.travelClass) {
-    queryParams.travelClass = params.travelClass;
-  }
+      if (params.returnDate) {
+        queryParams.returnDate = params.returnDate;
+      }
 
-  if (params.nonStop !== undefined) {
-    queryParams.nonStop = params.nonStop;
-  }
+      if (params.children && params.children > 0) {
+        queryParams.children = params.children;
+      }
 
-  if (params.currencyCode) {
-    queryParams.currencyCode = params.currencyCode;
-  }
+      if (params.infants && params.infants > 0) {
+        queryParams.infants = params.infants;
+      }
 
-  if (params.maxPrice) {
-    queryParams.maxPrice = params.maxPrice;
-  }
+      if (params.travelClass) {
+        queryParams.travelClass = params.travelClass;
+      }
 
-  if (params.max) {
-    queryParams.max = params.max;
-  } else {
-    queryParams.max = 250;
-  }
+      if (params.nonStop !== undefined) {
+        queryParams.nonStop = params.nonStop;
+      }
 
-  const url = buildFlightOffersUrl(queryParams);
+      if (params.currencyCode) {
+        queryParams.currencyCode = params.currencyCode;
+      }
 
-  const response = await axiosInstance.get<AmadeusFlightOffersResponse>(url, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+      if (params.maxPrice) {
+        queryParams.maxPrice = params.maxPrice;
+      }
 
-  return response.data;
+      if (params.max) {
+        queryParams.max = params.max;
+      } else {
+        queryParams.max = 250;
+      }
+
+      const url = buildFlightOffersUrl(queryParams);
+
+      const response = await axiosInstance.get<AmadeusFlightOffersResponse>(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return response.data;
+    } finally {
+      pendingRequests.delete(cacheKey);
+    }
+  })();
+
+  pendingRequests.set(cacheKey, requestPromise);
+  return requestPromise;
 };
 
 export const searchAirports = async (
   params: AmadeusLocationSearchRequest
 ): Promise<AmadeusLocationResponse> => {
-  const token = await getAccessToken();
+  const cacheKey = getCacheKey('airports', params);
 
-  const url = buildLocationSearchUrl(params.keyword, params.subType || 'AIRPORT');
+  if (pendingRequests.has(cacheKey)) {
+    return pendingRequests.get(cacheKey);
+  }
 
-  const response = await axiosInstance.get<AmadeusLocationResponse>(url, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const requestPromise = (async () => {
+    try {
+      const token = await getAccessToken();
 
-  return response.data;
+      const url = buildLocationSearchUrl(params.keyword, params.subType || 'AIRPORT');
+
+      const response = await axiosInstance.get<AmadeusLocationResponse>(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return response.data;
+    } finally {
+      pendingRequests.delete(cacheKey);
+    }
+  })();
+
+  pendingRequests.set(cacheKey, requestPromise);
+  return requestPromise;
 };
 
 export const amadeusClient = {

@@ -8,17 +8,20 @@ const queryConfig: DefaultOptions = {
     gcTime: 10 * 60 * 1000,
     refetchOnWindowFocus: false,
     refetchOnReconnect: true,
+    refetchOnMount: false,
     retry: (failureCount, error) => {
       const apiError = error as ApiError;
       if (apiError.status === 401 || apiError.status === 403 || apiError.status === 404) {
         return false;
       }
-      return failureCount < 2;
+      return failureCount < 1;
     },
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+    networkMode: 'online',
   },
   mutations: {
     retry: false,
+    networkMode: 'online',
     onError: (error) => {
       console.error('Mutation error:', error);
     },

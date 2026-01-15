@@ -8,6 +8,10 @@ import type {
 import type { Flight, Airport, FlightSegment, Itinerary } from '@/types';
 import { parseDuration } from '@/utils/duration';
 
+const flightCache = new WeakMap<AmadeusFlightOffer, Flight>();
+const segmentCache = new WeakMap<AmadeusSegment, FlightSegment>();
+const itineraryCache = new WeakMap<AmadeusItinerary, Itinerary>();
+
 export const transformAmadeusLocation = (location: AmadeusLocation): Airport => {
   return {
     iataCode: location.iataCode,
@@ -24,7 +28,11 @@ export const transformAmadeusSegment = (
   carriers: Record<string, string>,
   aircraft: Record<string, string>
 ): FlightSegment => {
-  return {
+  if (segmentCache.has(segment)) {
+    return segmentCache.get(segment)!;
+  }
+
+  const transformed = {
     id: segment.id,
     departure: {
       iataCode: segment.departure.iataCode,
@@ -43,6 +51,9 @@ export const transformAmadeusSegment = (
     duration: parseDuration(segment.duration),
     numberOfStops: segment.numberOfStops,
   };
+
+  segmentCache.set(segment, transformed);
+  return transformed;
 };
 
 export const transformAmadeusItinerary = (
@@ -50,6 +61,10 @@ export const transformAmadeusItinerary = (
   carriers: Record<string, string>,
   aircraft: Record<string, string>
 ): Itinerary => {
+  if (itineraryCache.has(itinerary)) {
+    return itineraryCache.get(itinerary)!;
+  }
+
   const segments = itinerary.segments.map((segment) =>
     transformAmadeusSegment(segment, carriers, aircraft)
   );
@@ -58,19 +73,26 @@ export const transformAmadeusItinerary = (
   const arrivalTime = segments[segments.length - 1].arrival.at;
   const totalStops = segments.reduce((sum, seg) => sum + seg.numberOfStops, 0);
 
-  return {
+  const transformed = {
     duration: parseDuration(itinerary.duration),
     segments,
     departureTime,
     arrivalTime,
     totalStops,
   };
+
+  itineraryCache.set(itinerary, transformed);
+  return transformed;
 };
 
 export const transformAmadeusFlightOffer = (
   offer: AmadeusFlightOffer,
   dictionaries: AmadeusFlightOffersResponse['dictionaries']
 ): Flight => {
+  if (flightCache.has(offer)) {
+    return flightCache.get(offer)!;
+  }
+
   const itineraries = offer.itineraries.map((itinerary) =>
     transformAmadeusItinerary(itinerary, dictionaries.carriers, dictionaries.aircraft)
   );
@@ -99,7 +121,7 @@ export const transformAmadeusFlightOffer = (
     )
   );
 
-  return {
+  const transformed = {
     id: offer.id,
     itineraries,
     price: {
@@ -119,6 +141,9 @@ export const transformAmadeusFlightOffer = (
     totalStops,
     airlines,
   };
+
+  flightCache.set(offer, transformed);
+  return transformed;
 };
 
 export const transformFlightOffersResponse = (

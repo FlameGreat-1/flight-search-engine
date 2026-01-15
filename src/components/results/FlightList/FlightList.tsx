@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { FlightCard } from '../FlightCard';
 import { FlightDetails } from '../FlightDetails';
 import { EmptyState } from '../EmptyState';
-import { LoadingSpinner, Button } from '@/components/common';
+import { LoadingSpinner, Button, Skeleton } from '@/components/common';
 import { useFilteredFlights } from '@/features/filters';
 import { clsx } from 'clsx';
 import type { Flight } from '@/types';
@@ -13,7 +13,7 @@ export interface FlightListProps {
   className?: string;
 }
 
-const FLIGHTS_PER_PAGE = 10;
+const FLIGHTS_PER_PAGE = 20;
 
 export const FlightList = ({
   isLoading = false,
@@ -24,6 +24,10 @@ export const FlightList = ({
   const [selectedFlight, setSelectedFlight] = useState<Flight | null>(null);
   const [visibleCount, setVisibleCount] = useState(FLIGHTS_PER_PAGE);
 
+  useEffect(() => {
+    setVisibleCount(FLIGHTS_PER_PAGE);
+  }, [flights.length]);
+
   const handleSelectFlight = (flight: Flight) => {
     setSelectedFlight(flight);
   };
@@ -33,16 +37,39 @@ export const FlightList = ({
   };
 
   const handleLoadMore = () => {
-    setVisibleCount((prev) => prev + FLIGHTS_PER_PAGE);
+    setVisibleCount((prev) => Math.min(prev + FLIGHTS_PER_PAGE, flights.length));
   };
 
-  const visibleFlights = flights.slice(0, visibleCount);
+  const visibleFlights = useMemo(
+    () => flights.slice(0, visibleCount),
+    [flights, visibleCount]
+  );
+
   const hasMore = visibleCount < flights.length;
+  const remainingCount = flights.length - visibleCount;
 
   if (isLoading) {
     return (
-      <div className={clsx('flex items-center justify-center py-20', className)}>
-        <LoadingSpinner size="xl" label="Searching for flights..." />
+      <div className={clsx('space-y-4', className)}>
+        {Array.from({ length: 5 }).map((_, index) => (
+          <div key={index} className="card p-6">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <Skeleton className="h-6 w-32" />
+                <Skeleton className="h-8 w-24" />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Skeleton className="h-20 w-full" />
+                <Skeleton className="h-20 w-full" />
+                <Skeleton className="h-20 w-full" />
+              </div>
+              <div className="flex gap-2">
+                <Skeleton className="h-6 w-16" />
+                <Skeleton className="h-6 w-20" />
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     );
   }
@@ -81,7 +108,7 @@ export const FlightList = ({
         {hasMore && (
           <div className="flex justify-center pt-4">
             <Button variant="secondary" onClick={handleLoadMore}>
-              Load More ({flights.length - visibleCount} remaining)
+              Load More ({remainingCount} remaining)
             </Button>
           </div>
         )}

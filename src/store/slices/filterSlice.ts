@@ -46,15 +46,24 @@ const initialState: FilterStoreState = {
   priceTrend: null,
 };
 
+let applyFiltersTimeout: NodeJS.Timeout | null = null;
+
 export const useFilterStore = create<FilterStoreState & FilterActions>()(
   devtools(
     (set, get) => ({
       ...initialState,
 
       initializeFilters: (flights) => {
+        if (flights.length === 0) {
+          set(initialState, false, 'initializeFilters');
+          return;
+        }
+
         const priceRange = getPriceRange(flights);
         const maxDuration = getMaxDuration(flights);
         const airlines = getUniqueAirlines(flights);
+        const priceData = generatePriceData(flights);
+        const priceTrend = calculatePriceTrend(priceData);
 
         set(
           {
@@ -73,8 +82,8 @@ export const useFilterStore = create<FilterStoreState & FilterActions>()(
               currentMax: null,
             },
             filteredResults: flights,
-            priceData: generatePriceData(flights),
-            priceTrend: calculatePriceTrend(generatePriceData(flights)),
+            priceData,
+            priceTrend,
           },
           false,
           'initializeFilters'
@@ -82,26 +91,58 @@ export const useFilterStore = create<FilterStoreState & FilterActions>()(
       },
 
       applyFilters: () => {
-        const state = get();
-        const searchResults = useSearchStore.getState().results;
-        
-        const filtered = applyAllFilters(searchResults, state);
-        const newPriceData = generatePriceData(filtered);
-        const newPriceTrend = calculatePriceTrend(newPriceData);
+        if (applyFiltersTimeout) {
+          clearTimeout(applyFiltersTimeout);
+        }
 
-        set(
-          {
-            filteredResults: filtered,
-            priceData: newPriceData,
-            priceTrend: newPriceTrend,
-          },
-          false,
-          'applyFilters'
-        );
+        applyFiltersTimeout = setTimeout(() => {
+          const state = get();
+          const searchResults = useSearchStore.getState().results;
+
+          if (searchResults.length === 0) {
+            set(
+              {
+                filteredResults: [],
+                priceData: [],
+                priceTrend: null,
+              },
+              false,
+              'applyFilters'
+            );
+            return;
+          }
+
+          const filtered = applyAllFilters(searchResults, state);
+
+          if (filtered.length === state.filteredResults.length) {
+            const isSame = filtered.every(
+              (flight, index) => flight.id === state.filteredResults[index]?.id
+            );
+            if (isSame) return;
+          }
+
+          const newPriceData = generatePriceData(filtered);
+          const newPriceTrend = calculatePriceTrend(newPriceData);
+
+          set(
+            {
+              filteredResults: filtered,
+              priceData: newPriceData,
+              priceTrend: newPriceTrend,
+            },
+            false,
+            'applyFilters'
+          );
+        }, 50);
       },
 
       updatePriceRange: (min, max) => {
         const state = get();
+
+        if (min === state.priceRange.currentMin && max === state.priceRange.currentMax) {
+          return;
+        }
+
         const activeFilters = state.activeFilters.filter((f) => f.type !== 'price');
 
         if (min !== state.priceRange.min || max !== state.priceRange.max) {
@@ -127,7 +168,9 @@ export const useFilterStore = create<FilterStoreState & FilterActions>()(
 
       toggleStops: (stops) => {
         const state = get();
-        const newStops = { ...state.stops, [stops]: !state.stops[stops] };
+        const currentValue = state.stops[stops];
+        const newStops = { ...state.stops, [stops]: !currentValue };
+
         const activeFilters = state.activeFilters.filter((f) => f.type !== 'stops');
 
         const stopsLabels = [];
@@ -224,6 +267,11 @@ export const useFilterStore = create<FilterStoreState & FilterActions>()(
 
       setMaxDuration: (duration) => {
         const state = get();
+
+        if (duration === state.duration.currentMax) {
+          return;
+        }
+
         const activeFilters = state.activeFilters.filter((f) => f.type !== 'duration');
 
         if (duration !== null) {
@@ -279,6 +327,10 @@ export const useFilterStore = create<FilterStoreState & FilterActions>()(
 
       clearAllFilters: () => {
         const state = get();
+
+        const hasActiveFilters = state.activeFilters.length > 0;
+        if (!hasActiveFilters) return;
+
         set(
           {
             priceRange: {
