@@ -27,7 +27,7 @@ export const AirportAutocomplete = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { keyword, updateKeyword, clearKeyword, airports, isLoading } = useAirportSearch(
+  const { keyword, updateKeyword, airports, isLoading } = useAirportSearch(
     value?.name || ''
   );
 

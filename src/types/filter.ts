@@ -22,21 +22,21 @@ export interface TimeRange {
   label: string;
   start: number;
   end: number;
-  selected: boolean;
+  range: string;
 }
 
 export interface DepartureTimeFilter {
-  earlyMorning: TimeRange;
-  morning: TimeRange;
-  afternoon: TimeRange;
-  evening: TimeRange;
+  earlyMorning: TimeRange & { selected: boolean };
+  morning: TimeRange & { selected: boolean };
+  afternoon: TimeRange & { selected: boolean };
+  evening: TimeRange & { selected: boolean };
 }
 
 export interface ArrivalTimeFilter {
-  earlyMorning: TimeRange;
-  morning: TimeRange;
-  afternoon: TimeRange;
-  evening: TimeRange;
+  earlyMorning: TimeRange & { selected: boolean };
+  morning: TimeRange & { selected: boolean };
+  afternoon: TimeRange & { selected: boolean };
+  evening: TimeRange & { selected: boolean };
 }
 
 export interface DurationFilter {

@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { usePriceAnalytics } from '@/features/analytics';
-import type { PricePoint } from '@/types';
 
 export const usePriceGraphData = () => {
   const { chartData, trend, insights, hasData } = usePriceAnalytics();

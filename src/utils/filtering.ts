@@ -1,4 +1,4 @@
-import type { Flight, FlightFilters, FilterState, StopsFilter } from '@/types';
+import type { Flight, FilterState, StopsFilter } from '@/types';
 import { getTimeOfDay } from './date';
 
 export const filterByPriceRange = (flights: Flight[], min: number, max: number): Flight[] => {
@@ -73,7 +73,7 @@ export const applyAllFilters = (flights: Flight[], filters: FilterState): Flight
   filtered = filterByAirlines(filtered, selectedAirlines);
 
   const selectedDepartureTimes = Object.entries(filters.departureTime)
-    .filter(([_, range]) => range.selected)
+    .filter(([, range]) => range.selected)
     .map(([key]) => {
       if (key === 'earlyMorning') return 'early-morning';
       if (key === 'morning') return 'morning';
@@ -84,7 +84,7 @@ export const applyAllFilters = (flights: Flight[], filters: FilterState): Flight
   filtered = filterByDepartureTime(filtered, selectedDepartureTimes);
 
   const selectedArrivalTimes = Object.entries(filters.arrivalTime)
-    .filter(([_, range]) => range.selected)
+    .filter(([, range]) => range.selected)
     .map(([key]) => {
       if (key === 'earlyMorning') return 'early-morning';
       if (key === 'morning') return 'morning';

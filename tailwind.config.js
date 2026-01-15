@@ -8,6 +8,7 @@ export default {
           bg: '#0a0a0b',
           surface: '#18181b',
           border: '#27272a',
+          'border-hover': '#3f3f46',
         },
         accent: {
           DEFAULT: '#a78bfa',
@@ -36,6 +37,7 @@ export default {
         'slide-down': 'slideDown 0.3s ease-out',
         'scale-in': 'scaleIn 0.2s ease-out',
         pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        shimmer: 'shimmer 2s infinite',
       },
       keyframes: {
         fadeIn: {
@@ -58,6 +60,16 @@ export default {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0.7' },
         },
+        shimmer: {
+          '0%': { backgroundPosition: '-1000px 0' },
+          '100%': { backgroundPosition: '1000px 0' },
+        },
+      },
+      backgroundImage: {
+        shimmer: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent)',
+      },
+      backgroundSize: {
+        shimmer: '1000px 100%',
       },
       screens: {
         xs: '475px',
@@ -68,5 +80,14 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        '.transition-smooth': {
+          transition: 'all 200ms cubic-bezier(0.4, 0, 0.2, 1)',
+        },
+      };
+      addUtilities(newUtilities);
+    },
+  ],
 };

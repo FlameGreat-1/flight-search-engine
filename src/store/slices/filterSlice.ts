@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import type { FilterStoreState, FilterActions } from '../types';
-import type { Flight, ActiveFilter, AirlineFilter } from '@/types';
+import { useSearchStore } from './searchSlice';
 import {
   applyAllFilters,
   getPriceRange,
@@ -83,10 +83,9 @@ export const useFilterStore = create<FilterStoreState & FilterActions>()(
 
       applyFilters: () => {
         const state = get();
-        const { filteredResults: _, priceData: __, priceTrend: ___, activeFilters: ____, ...filters } = state;
         const searchResults = useSearchStore.getState().results;
         
-        const filtered = applyAllFilters(searchResults, filters);
+        const filtered = applyAllFilters(searchResults, state);
         const newPriceData = generatePriceData(filtered);
         const newPriceTrend = calculatePriceTrend(newPriceData);
 
@@ -181,8 +180,8 @@ export const useFilterStore = create<FilterStoreState & FilterActions>()(
 
         const activeFilters = state.activeFilters.filter((f) => f.type !== 'departure');
         const selectedTimes = Object.entries(newDepartureTime)
-          .filter(([_, range]) => range.selected)
-          .map(([_, range]) => range.label);
+          .filter(([, range]) => range.selected)
+          .map(([, range]) => range.label);
 
         if (selectedTimes.length > 0) {
           activeFilters.push({
@@ -207,8 +206,8 @@ export const useFilterStore = create<FilterStoreState & FilterActions>()(
 
         const activeFilters = state.activeFilters.filter((f) => f.type !== 'arrival');
         const selectedTimes = Object.entries(newArrivalTime)
-          .filter(([_, range]) => range.selected)
-          .map(([_, range]) => range.label);
+          .filter(([, range]) => range.selected)
+          .map(([, range]) => range.label);
 
         if (selectedTimes.length > 0) {
           activeFilters.push({
@@ -254,7 +253,7 @@ export const useFilterStore = create<FilterStoreState & FilterActions>()(
 
         if (!filter) return;
 
-        let updates: Partial<FilterStoreState> = {
+        const updates: Partial<FilterStoreState> = {
           activeFilters: state.activeFilters.filter((f) => f.id !== filterId),
         };
 

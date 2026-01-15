@@ -60,10 +60,30 @@ export const SORT_OPTIONS: Record<SortOption, string> = {
 } as const;
 
 export const TIME_RANGES = {
-  EARLY_MORNING: { label: 'Early Morning', start: 0, end: 6 },
-  MORNING: { label: 'Morning', start: 6, end: 12 },
-  AFTERNOON: { label: 'Afternoon', start: 12, end: 18 },
-  EVENING: { label: 'Evening', start: 18, end: 24 },
+  EARLY_MORNING: {
+    label: 'Early Morning',
+    start: 0,
+    end: 6,
+    range: '12am - 6am',
+  },
+  MORNING: {
+    label: 'Morning',
+    start: 6,
+    end: 12,
+    range: '6am - 12pm',
+  },
+  AFTERNOON: {
+    label: 'Afternoon',
+    start: 12,
+    end: 18,
+    range: '12pm - 6pm',
+  },
+  EVENING: {
+    label: 'Evening',
+    start: 18,
+    end: 24,
+    range: '6pm - 12am',
+  },
 } as const;
 
 export const STOPS_OPTIONS = [

@@ -17,7 +17,7 @@ export const NotFound = () => {
             <div className="text-9xl font-bold text-accent">404</div>
             <h1 className="text-4xl font-bold text-text-primary">Page Not Found</h1>
             <p className="text-lg text-text-secondary">
-              The page you're looking for doesn't exist or has been moved.
+              The page you&apos;re looking for doesn&apos;t exist or has been moved.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
               <Button variant="primary" size="lg" onClick={handleGoHome}>

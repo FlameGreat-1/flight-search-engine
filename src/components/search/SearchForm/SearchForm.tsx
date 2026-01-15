@@ -5,6 +5,7 @@ import { PassengerSelector } from '../PassengerSelector';
 import { useSearchForm } from './useSearchForm';
 import { CABIN_CLASSES } from '@/utils/constants';
 import { clsx } from 'clsx';
+import type { CabinClass } from '@/types';
 
 export const SearchForm = () => {
   const {
@@ -122,7 +123,7 @@ export const SearchForm = () => {
           label="Cabin Class"
           options={cabinOptions}
           value={formData.cabinClass}
-          onChange={(e) => updateField('cabinClass', e.target.value as any)}
+          onChange={(e) => updateField('cabinClass', e.target.value as CabinClass)}
           disabled={isLoading}
         />
       </div>

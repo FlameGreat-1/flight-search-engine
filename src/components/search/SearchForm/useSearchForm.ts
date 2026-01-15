@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { useSearchStore } from '@/store';
 import { useFlightSearch, useSearchHistory } from '@/features/search';
 import { validateSearchForm, isSearchFormValid } from '@/utils/validation';
-import type { SearchFormData, SearchFormErrors, Airport, CabinClass, TripType } from '@/types';
+import type { SearchFormData, SearchFormErrors, Airport, TripType } from '@/types';
 
 export const useSearchForm = () => {
   const { criteria } = useSearchStore();

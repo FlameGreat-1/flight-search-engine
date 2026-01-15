@@ -1,5 +1,4 @@
 import { clsx } from 'clsx';
-import { Button } from '@/components/common';
 import type { ActiveFilter } from '@/types';
 
 export interface ActiveFiltersProps {

@@ -1,6 +1,11 @@
 import { AxiosInstance, AxiosError, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 import { STORAGE_KEYS, ERROR_MESSAGES } from '@/utils/constants';
-import type { ApiError } from '@/types';
+import type { ApiError, AmadeusError } from '@/types';
+
+interface AmadeusErrorResponse {
+  errors?: AmadeusError[];
+  message?: string;
+}
 
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -62,7 +67,7 @@ export const setupInterceptors = (instance: AxiosInstance): void => {
     (response: AxiosResponse) => {
       return response;
     },
-    async (error: AxiosError) => {
+    async (error: AxiosError<AmadeusErrorResponse>) => {
       const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
       if (error.response?.status === 401 && !originalRequest._retry) {
@@ -102,9 +107,9 @@ export const setupInterceptors = (instance: AxiosInstance): void => {
   );
 };
 
-const createApiError = (error: AxiosError): ApiError => {
+const createApiError = (error: AxiosError<AmadeusErrorResponse>): ApiError => {
   if (error.response) {
-    const data = error.response.data as any;
+    const data = error.response.data;
 
     if (data?.errors && Array.isArray(data.errors)) {
       return {

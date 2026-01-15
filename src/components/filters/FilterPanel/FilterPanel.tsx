@@ -77,7 +77,7 @@ export const FilterPanel = ({ className, onClose, isMobile = false }: FilterPane
         )}
 
         <DepartureTimeFilter
-          timeRanges={filters.departureTime}
+          timeRanges={filters.departureTime as unknown as Record<string, { label: string; start: number; end: number; range: string; selected: boolean }>}
           onToggle={actions.toggleDepartureTime}
         />
 

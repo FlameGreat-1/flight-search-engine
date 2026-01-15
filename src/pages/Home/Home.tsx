@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Container } from '@/components/layout';
 import { SearchForm } from '@/components/search';
 import { FilterPanel } from '@/components/filters';
@@ -6,7 +5,6 @@ import { ResultsHeader, FlightList } from '@/components/results';
 import { PriceGraph } from '@/components/charts';
 import { useSearchStore, useFilterStore, useUIStore } from '@/store';
 import { useFilteredFlights } from '@/features/filters';
-import { clsx } from 'clsx';
 
 export const Home = () => {
   const { hasSearched, isLoading } = useSearchStore();

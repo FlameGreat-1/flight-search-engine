@@ -1,5 +1,4 @@
 import type { UseQueryOptions, UseMutationOptions } from '@tanstack/react-query';
-import type { AxiosError } from 'axios';
 import type { ApiError } from '@/types';
 
 export type QueryConfig<TData = unknown> = Omit<

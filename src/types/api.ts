@@ -13,7 +13,7 @@ export interface AmadeusError {
   status: number;
   code: number;
   title: string;
-  detail: string;
+  detail?: string;
   source?: {
     parameter?: string;
     pointer?: string;

@@ -4,7 +4,6 @@ import { useDebounce } from '@/hooks';
 import { amadeusClient, transformAirportSearchResponse } from '@/api';
 import { queryKeys } from '@/lib';
 import { SEARCH_CONSTRAINTS } from '@/utils/constants';
-import type { Airport } from '@/types';
 
 export const useAirportSearch = (initialKeyword: string = '') => {
   const [keyword, setKeyword] = useState(initialKeyword);
@@ -27,14 +26,9 @@ export const useAirportSearch = (initialKeyword: string = '') => {
     setKeyword(value);
   }, []);
 
-  const clearKeyword = useCallback(() => {
-    setKeyword('');
-  }, []);
-
   return {
     keyword,
     updateKeyword,
-    clearKeyword,
     airports: data || [],
     isLoading: isLoading && debouncedKeyword.length >= SEARCH_CONSTRAINTS.MIN_KEYWORD_LENGTH,
     error: error?.message || null,

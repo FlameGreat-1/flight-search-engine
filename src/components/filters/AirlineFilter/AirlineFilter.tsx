@@ -1,4 +1,4 @@
-import { useState } from 'clsx';
+import { useState } from 'react';
 import { clsx } from 'clsx';
 import type { AirlineFilter as AirlineFilterType } from '@/types';
 
