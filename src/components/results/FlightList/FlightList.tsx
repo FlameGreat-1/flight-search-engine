@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { FlightCard } from '../FlightCard';
 import { FlightDetails } from '../FlightDetails';
 import { EmptyState } from '../EmptyState';
-import { LoadingSpinner, Button, Skeleton } from '@/components/common';
+import { Button, Skeleton } from '@/components/common';
 import { useFilteredFlights } from '@/features/filters';
 import { clsx } from 'clsx';
 import type { Flight } from '@/types';

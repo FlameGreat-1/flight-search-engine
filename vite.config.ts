@@ -48,18 +48,6 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'charts': ['recharts'],
-          'state': ['zustand', '@tanstack/react-query'],
-          'utils': ['axios', 'clsx', 'date-fns'],
-          'ui-components': [
-            './src/components/common/Button',
-            './src/components/common/Input',
-            './src/components/common/Select',
-            './src/components/common/DatePicker',
-          ],
-        },
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
         assetFileNames: (assetInfo) => {
@@ -76,10 +64,6 @@ export default defineConfig({
           }
           return 'assets/[name]-[hash][extname]';
         },
-      },
-      treeshake: {
-        moduleSideEffects: false,
-        propertyReadSideEffects: false,
       },
     },
     chunkSizeWarningLimit: 1000,

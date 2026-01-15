@@ -86,6 +86,7 @@ export interface PriceTrend {
   highest: number;
   trend: 'up' | 'down' | 'stable';
   percentageChange: number;
+  goodDeals: number;
 }
 
 export interface FlightFilters {

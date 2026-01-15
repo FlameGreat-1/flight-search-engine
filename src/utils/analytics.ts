@@ -1,5 +1,4 @@
 import type { Flight, PricePoint, PriceTrend } from '@/types';
-import { formatDateForAPI } from './date';
 
 export const calculatePriceTrend = (priceData: PricePoint[]): PriceTrend | null => {
   if (priceData.length < 2) {
