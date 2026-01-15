@@ -135,3 +135,5 @@ npm run type-check
 
 ## 🚀 Live Demo
 [https://instantflightsearch.vercel.app](https://instantflightsearch.vercel.app)
+
+![CI/CD](https://github.com/FlameGreat-1/flight-search-engine/actions/workflows/ci-cd.yml/badge.svg)

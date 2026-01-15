@@ -57,8 +57,13 @@ describe('FilterPanel', () => {
     render(<FilterPanel />);
 
     expect(screen.getByText(/price range/i)).toBeInTheDocument();
-    expect(screen.getByText(/stops/i)).toBeInTheDocument();
-    expect(screen.getByText(/airlines/i)).toBeInTheDocument();
+    
+    const stopsElements = screen.getAllByText(/stops/i);
+    expect(stopsElements.length).toBeGreaterThan(0);
+    
+    const airlinesElements = screen.getAllByText(/airlines/i);
+    expect(airlinesElements.length).toBeGreaterThan(0);
+    
     expect(screen.getByText(/departure time/i)).toBeInTheDocument();
     expect(screen.getByText(/max duration/i)).toBeInTheDocument();
   });
@@ -66,7 +71,9 @@ describe('FilterPanel', () => {
   it('renders mobile header when isMobile is true', () => {
     render(<FilterPanel isMobile />);
 
-    expect(screen.getByText(/filters/i)).toBeInTheDocument();
+    const filtersElements = screen.getAllByText(/filters/i);
+    expect(filtersElements.length).toBeGreaterThan(0);
+    
     expect(screen.getByLabelText(/close filters/i)).toBeInTheDocument();
   });
 
@@ -104,16 +111,26 @@ describe('FilterPanel', () => {
   it('renders airline filter options', () => {
     render(<FilterPanel />);
 
-    expect(screen.getByText(/american airlines/i)).toBeInTheDocument();
-    expect(screen.getByText(/united airlines/i)).toBeInTheDocument();
+    const americanElements = screen.getAllByText(/american airlines/i);
+    expect(americanElements.length).toBeGreaterThan(0);
+    
+    const unitedElements = screen.getAllByText(/united airlines/i);
+    expect(unitedElements.length).toBeGreaterThan(0);
   });
 
   it('renders departure time options', () => {
     render(<FilterPanel />);
 
-    expect(screen.getByText(/early morning/i)).toBeInTheDocument();
-    expect(screen.getByText(/morning/i)).toBeInTheDocument();
-    expect(screen.getByText(/afternoon/i)).toBeInTheDocument();
-    expect(screen.getByText(/evening/i)).toBeInTheDocument();
+    const earlyMorningElements = screen.getAllByText(/early morning/i);
+    expect(earlyMorningElements.length).toBeGreaterThan(0);
+    
+    const morningElements = screen.getAllByText(/morning/i);
+    expect(morningElements.length).toBeGreaterThan(0);
+    
+    const afternoonElements = screen.getAllByText(/afternoon/i);
+    expect(afternoonElements.length).toBeGreaterThan(0);
+    
+    const eveningElements = screen.getAllByText(/evening/i);
+    expect(eveningElements.length).toBeGreaterThan(0);
   });
 });

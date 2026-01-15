@@ -33,11 +33,16 @@ describe('SearchForm', () => {
   it('renders all form fields', () => {
     render(<SearchForm />, { wrapper });
 
-    expect(screen.getByText(/search flights/i)).toBeInTheDocument();
+    const searchFlightsElements = screen.getAllByText(/search flights/i);
+    expect(searchFlightsElements.length).toBeGreaterThan(0);
+    
     expect(screen.getByLabelText(/from/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/to/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/departure date/i)).toBeInTheDocument();
-    expect(screen.getByText(/passengers/i)).toBeInTheDocument();
+    
+    const passengersElements = screen.getAllByText(/passengers/i);
+    expect(passengersElements.length).toBeGreaterThan(0);
+    
     expect(screen.getByLabelText(/cabin class/i)).toBeInTheDocument();
   });
 

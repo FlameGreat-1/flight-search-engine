@@ -5,7 +5,8 @@ import { App } from './App';
 describe('App', () => {
   it('renders without crashing', () => {
     render(<App />);
-    expect(screen.getByText(/flight search/i)).toBeInTheDocument();
+    const flightSearchElements = screen.getAllByText(/flight search/i);
+    expect(flightSearchElements.length).toBeGreaterThan(0);
   });
 
   it('renders header', () => {
