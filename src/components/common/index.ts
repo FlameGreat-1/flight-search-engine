@@ -17,3 +17,6 @@ export { Skeleton, SkeletonGroup } from './Skeleton';
 export type { SkeletonProps } from './Skeleton';
 
 export { ErrorBoundary } from './ErrorBoundary';
+
+export { CurrencySelector } from './CurrencySelector';
+export type { CurrencySelectorProps } from './CurrencySelector';

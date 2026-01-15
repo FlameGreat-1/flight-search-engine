@@ -12,9 +12,9 @@ describe('PriceGraph', () => {
   beforeEach(() => {
     mockUsePriceGraphData.mockReturnValue({
       data: [
-        { price: 300, count: 5, range: '$200-$400', displayPrice: '$300', displayCount: '5 flights' },
-        { price: 500, count: 8, range: '$400-$600', displayPrice: '$500', displayCount: '8 flights' },
-        { price: 700, count: 3, range: '$600-$800', displayPrice: '$700', displayCount: '3 flights' },
+        { price: 300, count: 5, range: '$200-$400', displayPrice: '$300.00', displayCount: '5 flights' },
+        { price: 500, count: 8, range: '$400-$600', displayPrice: '$500.00', displayCount: '8 flights' },
+        { price: 700, count: 3, range: '$600-$800', displayPrice: '$700.00', displayCount: '3 flights' },
       ],
       priceRange: { min: 200, max: 800 },
       averagePrice: 500,
@@ -37,10 +37,10 @@ describe('PriceGraph', () => {
     expect(screen.getByText(/lowest/i)).toBeInTheDocument();
     expect(screen.getByText(/average/i)).toBeInTheDocument();
     
-    const priceElements300 = screen.getAllByText('$300');
+    const priceElements300 = screen.getAllByText('$300.00');
     expect(priceElements300.length).toBeGreaterThan(0);
     
-    const priceElements500 = screen.getAllByText('$500');
+    const priceElements500 = screen.getAllByText('$500.00');
     expect(priceElements500.length).toBeGreaterThan(0);
   });
 

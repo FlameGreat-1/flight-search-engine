@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { clsx } from 'clsx';
-import { formatCurrency } from '@/utils/currency';
+import { useCurrency } from '@/features/currency';
 
 export interface PriceRangeFilterProps {
   min: number;
@@ -9,6 +9,7 @@ export interface PriceRangeFilterProps {
   currentMax: number;
   onChange: (min: number, max: number) => void;
   disabled?: boolean;
+  currency?: string;
 }
 
 export const PriceRangeFilter = ({
@@ -18,14 +19,21 @@ export const PriceRangeFilter = ({
   currentMax,
   onChange,
   disabled = false,
+  currency = 'USD',
 }: PriceRangeFilterProps) => {
+  const { convert, format } = useCurrency();
   const [localMin, setLocalMin] = useState(currentMin);
   const [localMax, setLocalMax] = useState(currentMax);
 
+  const convertedMin = convert(min, currency);
+  const convertedMax = convert(max, currency);
+  const convertedCurrentMin = convert(currentMin, currency);
+  const convertedCurrentMax = convert(currentMax, currency);
+
   useEffect(() => {
-    setLocalMin(currentMin);
-    setLocalMax(currentMax);
-  }, [currentMin, currentMax]);
+    setLocalMin(convertedCurrentMin);
+    setLocalMax(convertedCurrentMax);
+  }, [convertedCurrentMin, convertedCurrentMax]);
 
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
@@ -38,20 +46,20 @@ export const PriceRangeFilter = ({
   };
 
   const handleMouseUp = () => {
-    if (localMin !== currentMin || localMax !== currentMax) {
+    if (localMin !== convertedCurrentMin || localMax !== convertedCurrentMax) {
       onChange(localMin, localMax);
     }
   };
 
-  const percentage = ((localMax - min) / (max - min)) * 100;
-  const leftPercentage = ((localMin - min) / (max - min)) * 100;
+  const percentage = ((localMax - convertedMin) / (convertedMax - convertedMin)) * 100;
+  const leftPercentage = ((localMin - convertedMin) / (convertedMax - convertedMin)) * 100;
 
   return (
     <div className={clsx('space-y-4', disabled && 'opacity-50 pointer-events-none')}>
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold text-text-primary">Price Range</h3>
         <span className="text-sm text-text-secondary">
-          {formatCurrency(localMin)} - {formatCurrency(localMax)}
+          {format(localMin)} - {format(localMax)}
         </span>
       </div>
 
@@ -68,21 +76,21 @@ export const PriceRangeFilter = ({
 
         <input
           type="range"
-          min={min}
-          max={max}
+          min={convertedMin}
+          max={convertedMax}
           value={localMin}
           onChange={handleMinChange}
           onMouseUp={handleMouseUp}
           onTouchEnd={handleMouseUp}
           disabled={disabled}
           className="absolute w-full h-1 top-2 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-accent [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-dark-bg [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-accent [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-dark-bg"
-          style={{ zIndex: localMin > max - 100 ? 5 : 3 }}
+          style={{ zIndex: localMin > convertedMax - 100 ? 5 : 3 }}
         />
 
         <input
           type="range"
-          min={min}
-          max={max}
+          min={convertedMin}
+          max={convertedMax}
           value={localMax}
           onChange={handleMaxChange}
           onMouseUp={handleMouseUp}
@@ -97,13 +105,13 @@ export const PriceRangeFilter = ({
         <div className="flex-1">
           <label className="text-xs text-text-muted mb-1 block">Min</label>
           <div className="text-sm font-medium text-text-primary">
-            {formatCurrency(localMin)}
+            {format(localMin)}
           </div>
         </div>
         <div className="flex-1">
           <label className="text-xs text-text-muted mb-1 block">Max</label>
           <div className="text-sm font-medium text-text-primary">
-            {formatCurrency(localMax)}
+            {format(localMax)}
           </div>
         </div>
       </div>

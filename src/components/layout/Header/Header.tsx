@@ -1,4 +1,5 @@
 import { Container } from '../Container';
+import { CurrencySelector } from '@/components/common';
 
 export const Header = () => {
   return (
@@ -30,6 +31,8 @@ export const Header = () => {
               </p>
             </div>
           </div>
+
+          <CurrencySelector compact />
         </div>
       </Container>
     </header>

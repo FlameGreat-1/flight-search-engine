@@ -5,6 +5,7 @@ import type {
   FilterState,
   PricePoint,
   PriceTrend,
+  ExchangeRates,
 } from '@/types';
 
 export interface SearchState {
@@ -25,6 +26,14 @@ export interface UIState {
   sortBy: SortOption;
   isMobileFilterOpen: boolean;
   selectedFlightId: string | null;
+}
+
+export interface CurrencyStoreState {
+  selectedCurrency: string;
+  exchangeRates: ExchangeRates | null;
+  isLoading: boolean;
+  error: string | null;
+  lastUpdated: number | null;
 }
 
 export interface SearchActions {
@@ -52,4 +61,15 @@ export interface UIActions {
   setSortBy: (sortBy: SortOption) => void;
   toggleMobileFilter: () => void;
   setSelectedFlight: (flightId: string | null) => void;
+}
+
+export interface CurrencyActions {
+  setSelectedCurrency: (currency: string) => void;
+  setExchangeRates: (rates: ExchangeRates) => void;
+  setLoading: (isLoading: boolean) => void;
+  setError: (error: string | null) => void;
+  fetchExchangeRates: (baseCurrency?: string) => Promise<void>;
+  detectUserCurrency: () => Promise<void>;
+  updateExchangeRates: () => Promise<void>;
+  resetCurrency: () => void;
 }

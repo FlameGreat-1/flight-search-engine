@@ -6,3 +6,4 @@ export * from './validation';
 export * from './sorting';
 export * from './filtering';
 export * from './analytics';
+export * from './exchangeRates';

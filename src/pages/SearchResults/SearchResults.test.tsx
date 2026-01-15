@@ -24,6 +24,17 @@ vi.mock('@/store', () => ({
     isMobileFilterOpen: false,
     toggleMobileFilter: vi.fn(),
   }),
+  useCurrencyStore: () => ({
+    selectedCurrency: 'USD',
+    exchangeRates: null,
+    isLoading: false,
+    error: null,
+    symbol: '$',
+    detectUserCurrency: vi.fn(),
+    fetchExchangeRates: vi.fn(),
+    changeCurrency: vi.fn(),
+    updateExchangeRates: vi.fn(),
+  }),
 }));
 
 vi.mock('@/features/filters', () => ({

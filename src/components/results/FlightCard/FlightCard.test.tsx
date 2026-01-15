@@ -67,8 +67,8 @@ describe('FlightCard', () => {
   it('displays price correctly', () => {
     render(<FlightCard flight={mockFlight} />);
 
-    expect(screen.getByText('$500')).toBeInTheDocument();
-    expect(screen.getByText('$500 per adult')).toBeInTheDocument();
+    expect(screen.getByText('$500.00')).toBeInTheDocument();
+    expect(screen.getByText(/per adult/i)).toBeInTheDocument();
   });
 
   it('shows direct flight badge', () => {

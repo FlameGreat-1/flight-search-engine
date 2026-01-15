@@ -58,3 +58,12 @@ export type {
   FilterPreset,
   FilterPresetConfig,
 } from './filter';
+
+export type {
+  Currency,
+  ExchangeRates,
+  CurrencyState,
+  LocationData,
+} from './currency';
+
+export { CURRENCY_SYMBOLS, DEFAULT_CURRENCY, CACHE_DURATION } from './currency';

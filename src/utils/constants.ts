@@ -111,39 +111,29 @@ export const FILTER_PRESETS: Record<FilterPreset, { name: string; description: s
   },
 } as const;
 
-export const CURRENCY_SYMBOLS: Record<string, string> = {
-  USD: '$',
-  EUR: '€',
-  GBP: '£',
-  JPY: '¥',
-  CAD: 'C$',
-  AUD: 'A$',
-  CHF: 'CHF',
-  CNY: '¥',
-  INR: '₹',
-  NGN: '₦',
-} as const;
-
-export const DEFAULT_CURRENCY = 'USD';
-
 export const STORAGE_KEYS = {
   SEARCH_HISTORY: 'flight_search_history',
   RECENT_SEARCHES: 'recent_searches',
   USER_PREFERENCES: 'user_preferences',
   AUTH_TOKEN: 'amadeus_token',
   TOKEN_EXPIRY: 'token_expiry',
+  EXCHANGE_RATES: 'exchange_rates',
+  USER_LOCATION: 'user_location',
+  SELECTED_CURRENCY: 'selected_currency',
 } as const;
 
 export const CACHE_KEYS = {
   FLIGHT_OFFERS: 'flight_offers',
   AIRPORTS: 'airports',
   PRICE_TRENDS: 'price_trends',
+  EXCHANGE_RATES: 'exchange_rates',
 } as const;
 
 export const QUERY_STALE_TIME = {
   FLIGHT_OFFERS: 5 * 60 * 1000,
   AIRPORTS: 24 * 60 * 60 * 1000,
   AUTH_TOKEN: 25 * 60 * 1000,
+  EXCHANGE_RATES: 24 * 60 * 60 * 1000,
 } as const;
 
 export const ERROR_MESSAGES = {
@@ -153,6 +143,8 @@ export const ERROR_MESSAGES = {
   VALIDATION_ERROR: 'Please check your search criteria.',
   NO_RESULTS: 'No flights found. Try adjusting your search.',
   GENERIC_ERROR: 'Something went wrong. Please try again.',
+  CURRENCY_ERROR: 'Unable to fetch exchange rates. Using default currency.',
+  LOCATION_ERROR: 'Unable to detect location. Using default currency.',
 } as const;
 
 export const POPULAR_ROUTES = [

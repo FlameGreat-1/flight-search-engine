@@ -1,5 +1,5 @@
 import { FlightSegment } from './FlightSegment';
-import { formatCurrency } from '@/utils/currency';
+import { useCurrency } from '@/features/currency';
 import { formatDuration } from '@/utils/duration';
 import { formatDate } from '@/utils/date';
 import { Button } from '@/components/common';
@@ -19,6 +19,8 @@ export const FlightCard = ({
   isSelected = false,
   className,
 }: FlightCardProps) => {
+  const { convertAndFormat } = useCurrency();
+
   const handleSelect = () => {
     onSelect?.(flight);
   };
@@ -111,10 +113,10 @@ export const FlightCard = ({
           <div className="lg:text-right space-y-3 lg:min-w-[200px]">
             <div>
               <div className="text-3xl font-bold text-accent">
-                {formatCurrency(flight.price.total)}
+                {convertAndFormat(flight.price.total, flight.price.currency)}
               </div>
               <div className="text-sm text-text-muted">
-                {formatCurrency(flight.price.perAdult)} per adult
+                {convertAndFormat(flight.price.perAdult, flight.price.currency)} per adult
               </div>
             </div>
 
