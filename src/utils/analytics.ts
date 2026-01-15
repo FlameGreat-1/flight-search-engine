@@ -19,42 +19,90 @@ export const calculatePriceTrend = (priceData: PricePoint[]): PriceTrend | null 
   if (percentageChange > 5) trend = 'up';
   else if (percentageChange < -5) trend = 'down';
 
+  const goodDeals = priceData.reduce((count, point) => {
+    return point.price < average ? count + point.count : count;
+  }, 0);
+
   return {
     average: Math.round(average),
     lowest,
     highest,
     trend,
     percentageChange: Math.round(percentageChange * 10) / 10,
+    goodDeals,
   };
 };
 
 export const generatePriceData = (flights: Flight[]): PricePoint[] => {
-  const priceMap = new Map<string, { total: number; count: number }>();
+  if (flights.length === 0) {
+    return [];
+  }
+
+  if (flights.length < 3) {
+    return flights.map((flight, index) => ({
+      date: `Option ${index + 1}`,
+      price: Math.round(flight.price.total),
+      count: 1,
+    }));
+  }
+
+  const prices = flights.map((f) => f.price.total);
+  const minPrice = Math.min(...prices);
+  const maxPrice = Math.max(...prices);
+  const priceRange = maxPrice - minPrice;
+
+  if (priceRange < 50) {
+    const stopsBuckets = new Map<string, { total: number; count: number }>();
+    
+    flights.forEach((flight) => {
+      const stops = flight.itineraries[0].segments.length - 1;
+      const key = stops === 0 ? 'Direct' : stops === 1 ? '1 Stop' : '2+ Stops';
+      
+      const bucket = stopsBuckets.get(key) || { total: 0, count: 0 };
+      bucket.total += flight.price.total;
+      bucket.count += 1;
+      stopsBuckets.set(key, bucket);
+    });
+
+    const stopOrder = { 'Direct': 0, '1 Stop': 1, '2+ Stops': 2 };
+    
+    return Array.from(stopsBuckets.entries())
+      .map(([date, data]) => ({
+        date,
+        price: Math.round(data.total / data.count),
+        count: data.count,
+      }))
+      .sort((a, b) => stopOrder[a.date as keyof typeof stopOrder] - stopOrder[b.date as keyof typeof stopOrder]);
+  }
+
+  const bucketCount = Math.min(5, Math.ceil(flights.length / 10));
+  const bucketSize = Math.ceil(priceRange / bucketCount);
+  const buckets = new Map<string, { total: number; count: number }>();
 
   flights.forEach((flight) => {
-    const date = formatDateForAPI(flight.departureDate);
-    const existing = priceMap.get(date);
+    const price = flight.price.total;
+    const bucketIndex = Math.min(bucketCount - 1, Math.floor((price - minPrice) / bucketSize));
+    const bucketMin = minPrice + bucketIndex * bucketSize;
+    const bucketMax = bucketMin + bucketSize;
+    const range = `$${Math.round(bucketMin)}-$${Math.round(bucketMax)}`;
 
-    if (existing) {
-      priceMap.set(date, {
-        total: existing.total + flight.price.total,
-        count: existing.count + 1,
-      });
-    } else {
-      priceMap.set(date, {
-        total: flight.price.total,
-        count: 1,
-      });
-    }
+    const bucket = buckets.get(range) || { total: 0, count: 0 };
+    bucket.total += price;
+    bucket.count += 1;
+    buckets.set(range, bucket);
   });
 
-  return Array.from(priceMap.entries())
+  return Array.from(buckets.entries())
     .map(([date, data]) => ({
       date,
       price: Math.round(data.total / data.count),
       count: data.count,
     }))
-    .sort((a, b) => a.date.localeCompare(b.date));
+    .sort((a, b) => {
+      const aMin = parseInt(a.date.split('-')[0].replace('$', ''));
+      const bMin = parseInt(b.date.split('-')[0].replace('$', ''));
+      return aMin - bMin;
+    });
 };
 
 export const calculateAveragePrice = (flights: Flight[]): number => {

@@ -1,6 +1,6 @@
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -47,13 +47,21 @@ export const PriceGraph = ({ className }: PriceGraphProps) => {
     );
   }
 
+  const hasMultipleDataPoints = data.length > 1;
+  const priceVariation = lowestPrice > 0 
+    ? ((averagePrice - lowestPrice) / lowestPrice) * 100 
+    : 0;
+  const hasLowVariation = priceVariation < 5;
+
   return (
     <div className={clsx('card p-6 space-y-6', className)}>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h2 className="text-xl font-bold text-text-primary mb-1">Price Trends</h2>
           <p className="text-sm text-text-secondary">
-            Average prices across different price ranges
+            {hasMultipleDataPoints 
+              ? 'Price distribution across flight options (updates as you filter)'
+              : 'Showing price for available flights'}
           </p>
         </div>
 
@@ -69,7 +77,15 @@ export const PriceGraph = ({ className }: PriceGraphProps) => {
         </div>
       </div>
 
-      {trend && (
+      {!hasMultipleDataPoints && (
+        <div className="p-3 bg-accent/10 border border-accent/20 rounded-lg">
+          <p className="text-xs text-accent-light">
+            💡 Apply different filters to see price variations across flight options
+          </p>
+        </div>
+      )}
+
+      {trend && hasMultipleDataPoints && (
         <div className="flex items-center gap-2 text-sm">
           {trend.trend === 'up' && (
             <div className="flex items-center gap-1 text-error">
@@ -134,12 +150,26 @@ export const PriceGraph = ({ className }: PriceGraphProps) => {
         </div>
       )}
 
+      {hasLowVariation && hasMultipleDataPoints && (
+        <div className="p-3 bg-warning/10 border border-warning/20 rounded-lg">
+          <p className="text-xs text-warning">
+            ℹ️ Prices are very similar across options. Try adjusting filters to see more variation.
+          </p>
+        </div>
+      )}
+
       <div className="h-80">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
+          <AreaChart data={data} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
+            <defs>
+              <linearGradient id="priceGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#a78bfa" stopOpacity={0.3} />
+                <stop offset="95%" stopColor="#a78bfa" stopOpacity={0} />
+              </linearGradient>
+            </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#2a2a2a" opacity={0.3} />
             <XAxis
-              dataKey="range"
+              dataKey="date"
               stroke="#6b7280"
               tick={{ fill: '#9ca3af', fontSize: 12 }}
               tickLine={{ stroke: '#2a2a2a' }}
@@ -164,18 +194,27 @@ export const PriceGraph = ({ className }: PriceGraphProps) => {
                 position: 'right',
               }}
             />
-            <Line
+            <Area
               type="monotone"
               dataKey="price"
               stroke="#8b5cf6"
               strokeWidth={3}
+              fill="url(#priceGradient)"
               dot={{ fill: '#8b5cf6', r: 4 }}
               activeDot={{ r: 6, fill: '#a78bfa' }}
               animationDuration={300}
             />
-          </LineChart>
+          </AreaChart>
         </ResponsiveContainer>
       </div>
+
+      {trend && trend.goodDeals > 0 && hasMultipleDataPoints && (
+        <div className="p-4 bg-success/10 border border-success/20 rounded-lg">
+          <p className="text-sm text-success">
+            ✨ {trend.goodDeals} {trend.goodDeals === 1 ? 'great deal' : 'great deals'} available below average price
+          </p>
+        </div>
+      )}
     </div>
   );
 };
