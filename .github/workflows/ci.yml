@@ -1,3 +1,4 @@
+# GitHub Actions CI/CD Pipeline Configuration
 name: CI/CD Pipeline
 
 on:
