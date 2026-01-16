@@ -1,5 +1,5 @@
 {
-  "name": "Flight Search Engine",
+  "name": "FlightSearch",
   "short_name": "FlightSearch",
   "description": "Find the best flight deals with real-time price trends and smart filtering",
   "start_url": "/",
