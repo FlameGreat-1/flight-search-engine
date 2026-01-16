@@ -66,6 +66,7 @@ export const SearchForm = () => {
           disabled={isLoading}
           className={clsx(
             'absolute',
+            'top-[calc(50%-0.5rem)] left-1/2 -translate-x-1/2',
             'md:top-[70%] md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2',
             'md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2',
             'w-10 h-10 rounded-full bg-dark-surface border-2 border-dark-border',
