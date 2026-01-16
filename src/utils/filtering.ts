@@ -8,19 +8,50 @@ export const filterByPriceRange = (flights: Flight[], min: number, max: number):
   });
 };
 
+// export const filterByStops = (flights: Flight[], stopsFilter: StopsFilter): Flight[] => {
+//   if (!stopsFilter.direct && !stopsFilter.oneStop && !stopsFilter.twoPlusStops) {
+//     return flights;
+//   }
+
+//   return flights.filter((flight) => {
+//     const stops = flight.totalStops;
+//     if (stopsFilter.direct && stops === 0) return true;
+//     if (stopsFilter.oneStop && stops === 1) return true;
+//     if (stopsFilter.twoPlusStops && stops >= 2) return true;
+//     return false;
+//   });
+// };
+
 export const filterByStops = (flights: Flight[], stopsFilter: StopsFilter): Flight[] => {
+  console.log('🔍 filterByStops called:', {
+    totalFlights: flights.length,
+    stopsFilter,
+    flightStops: flights.map(f => ({ id: f.id, totalStops: f.totalStops }))
+  });
+
+  console.log('First 5 flights totalStops:', flights.slice(0, 5).map(f => f.totalStops));
+
   if (!stopsFilter.direct && !stopsFilter.oneStop && !stopsFilter.twoPlusStops) {
     return flights;
   }
 
-  return flights.filter((flight) => {
+  const filtered = flights.filter((flight) => {
     const stops = flight.totalStops;
     if (stopsFilter.direct && stops === 0) return true;
     if (stopsFilter.oneStop && stops === 1) return true;
     if (stopsFilter.twoPlusStops && stops >= 2) return true;
     return false;
   });
+
+  console.log('✅ Filtered results:', {
+    originalCount: flights.length,
+    filteredCount: filtered.length,
+    filtered: filtered.map(f => ({ id: f.id, totalStops: f.totalStops }))
+  });
+
+  return filtered;
 };
+
 
 export const filterByAirlines = (flights: Flight[], selectedAirlines: string[]): Flight[] => {
   if (selectedAirlines.length === 0) {

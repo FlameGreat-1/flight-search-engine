@@ -32,7 +32,7 @@ export const useCurrencyStore = create<CurrencyStore>()(
 
       setSelectedCurrency: (currency: string) => {
         set({ selectedCurrency: currency, error: null });
-        get().fetchExchangeRates(currency);
+        get().fetchExchangeRates('USD');
       },
 
       setExchangeRates: (rates: ExchangeRates) => {
@@ -52,7 +52,7 @@ export const useCurrencyStore = create<CurrencyStore>()(
       },
 
       fetchExchangeRates: async (baseCurrency?: string) => {
-        const currency = baseCurrency || get().selectedCurrency;
+        const currency = baseCurrency || 'USD';
         
         set({ isLoading: true, error: null });
 
@@ -81,26 +81,26 @@ export const useCurrencyStore = create<CurrencyStore>()(
           const detectedCurrency = location.currency || DEFAULT_CURRENCY;
           
           set({ selectedCurrency: detectedCurrency });
-          await get().fetchExchangeRates(detectedCurrency);
+          await get().fetchExchangeRates('USD');
         } catch (error) {
           set({
             selectedCurrency: DEFAULT_CURRENCY,
             error: null,
             isLoading: false,
           });
-          await get().fetchExchangeRates(DEFAULT_CURRENCY);
+          await get().fetchExchangeRates('USD');
         }
       },
 
       updateExchangeRates: async () => {
-        const { selectedCurrency, lastUpdated } = get();
+        const { lastUpdated } = get();
         const oneDay = 24 * 60 * 60 * 1000;
         
         if (lastUpdated && Date.now() - lastUpdated < oneDay) {
           return;
         }
 
-        await get().fetchExchangeRates(selectedCurrency);
+        await get().fetchExchangeRates('USD');
       },
 
       resetCurrency: () => {

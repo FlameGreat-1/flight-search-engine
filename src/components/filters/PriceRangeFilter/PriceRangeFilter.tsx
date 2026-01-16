@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { clsx } from 'clsx';
 import { useCurrency } from '@/features/currency';
 
@@ -23,10 +23,10 @@ export const PriceRangeFilter = ({
 }: PriceRangeFilterProps) => {
   const { convert, format, selectedCurrency, exchangeRates } = useCurrency();
   
-  const convertedMin = convert(min, currency);
-  const convertedMax = convert(max, currency);
-  const convertedCurrentMin = convert(currentMin, currency);
-  const convertedCurrentMax = convert(currentMax, currency);
+  const convertedMin = useMemo(() => Math.round(convert(min, currency)), [convert, min, currency]);
+  const convertedMax = useMemo(() => Math.round(convert(max, currency)), [convert, max, currency]);
+  const convertedCurrentMin = useMemo(() => Math.round(convert(currentMin, currency)), [convert, currentMin, currency]);
+  const convertedCurrentMax = useMemo(() => Math.round(convert(currentMax, currency)), [convert, currentMax, currency]);
 
   const [localMin, setLocalMin] = useState(convertedCurrentMin);
   const [localMax, setLocalMax] = useState(convertedCurrentMax);
@@ -47,10 +47,16 @@ export const PriceRangeFilter = ({
   };
 
   const convertBackToUSD = (value: number): number => {
-    if (!exchangeRates || selectedCurrency === 'USD') return value;
+    if (!exchangeRates || selectedCurrency === 'USD') {
+      return value;
+    }
     
-    const selectedRate = exchangeRates.rates[selectedCurrency] || 1;
-    return value / selectedRate;
+    const selectedRate = exchangeRates.rates[selectedCurrency];
+    if (!selectedRate) {
+      return value;
+    }
+    
+    return Math.round(value / selectedRate);
   };
 
   const handleMouseUp = () => {
@@ -63,6 +69,8 @@ export const PriceRangeFilter = ({
 
   const percentage = ((localMax - convertedMin) / (convertedMax - convertedMin)) * 100;
   const leftPercentage = ((localMin - convertedMin) / (convertedMax - convertedMin)) * 100;
+
+  const step = Math.max(1, Math.ceil((convertedMax - convertedMin) / 100));
 
   return (
     <div className={clsx('space-y-4', disabled && 'opacity-50 pointer-events-none')}>
@@ -88,6 +96,7 @@ export const PriceRangeFilter = ({
           type="range"
           min={convertedMin}
           max={convertedMax}
+          step={step}
           value={localMin}
           onChange={handleMinChange}
           onMouseUp={handleMouseUp}
@@ -101,6 +110,7 @@ export const PriceRangeFilter = ({
           type="range"
           min={convertedMin}
           max={convertedMax}
+          step={step}
           value={localMax}
           onChange={handleMaxChange}
           onMouseUp={handleMouseUp}

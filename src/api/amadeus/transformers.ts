@@ -71,7 +71,7 @@ export const transformAmadeusItinerary = (
 
   const departureTime = segments[0].departure.at;
   const arrivalTime = segments[segments.length - 1].arrival.at;
-  const totalStops = segments.reduce((sum, seg) => sum + seg.numberOfStops, 0);
+  const totalStops = segments.length - 1;
 
   const transformed = {
     duration: parseDuration(itinerary.duration),
@@ -111,7 +111,7 @@ export const transformAmadeusFlightOffer = (
   const arrivalDate = itineraries[itineraries.length - 1].arrivalTime;
 
   const totalDuration = itineraries.reduce((sum, itinerary) => sum + itinerary.duration, 0);
-  const totalStops = itineraries.reduce((sum, itinerary) => sum + itinerary.totalStops, 0);
+  const totalStops = itineraries.reduce((sum, itinerary) => sum + (itinerary.segments.length - 1), 0);
 
   const airlines = Array.from(
     new Set(
