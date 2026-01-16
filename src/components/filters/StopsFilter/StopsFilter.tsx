@@ -1,33 +1,5 @@
 import { clsx } from 'clsx';
 
-export const filterByStops = (flights: Flight[], stopsFilter: StopsFilter): Flight[] => {
-  console.log('🔍 filterByStops called:', {
-    totalFlights: flights.length,
-    stopsFilter,
-    flightStops: flights.map(f => ({ id: f.id, totalStops: f.totalStops }))
-  });
-
-  if (!stopsFilter.direct && !stopsFilter.oneStop && !stopsFilter.twoPlusStops) {
-    return flights;
-  }
-
-  const filtered = flights.filter((flight) => {
-    const stops = flight.totalStops;
-    if (stopsFilter.direct && stops === 0) return true;
-    if (stopsFilter.oneStop && stops === 1) return true;
-    if (stopsFilter.twoPlusStops && stops >= 2) return true;
-    return false;
-  });
-
-  console.log('✅ Filtered results:', {
-    originalCount: flights.length,
-    filteredCount: filtered.length,
-    filtered: filtered.map(f => ({ id: f.id, totalStops: f.totalStops }))
-  });
-
-  return filtered;
-};
-
 export interface StopsFilterProps {
   direct: boolean;
   oneStop: boolean;
