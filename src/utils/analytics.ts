@@ -42,6 +42,7 @@ export const generatePriceData = (flights: Flight[]): PricePoint[] => {
       date: `Option ${index + 1}`,
       price: Math.round(flight.price.total),
       count: 1,
+      range: `${Math.round(flight.price.total)}-${Math.round(flight.price.total)}`,
     }));
   }
 
@@ -70,22 +71,23 @@ export const generatePriceData = (flights: Flight[]): PricePoint[] => {
         date,
         price: Math.round(data.total / data.count),
         count: data.count,
+        range: date,
       }))
       .sort((a, b) => stopOrder[a.date as keyof typeof stopOrder] - stopOrder[b.date as keyof typeof stopOrder]);
   }
 
   const bucketCount = Math.min(5, Math.ceil(flights.length / 10));
   const bucketSize = Math.ceil(priceRange / bucketCount);
-  const buckets = new Map<string, { total: number; count: number }>();
+  const buckets = new Map<string, { total: number; count: number; min: number; max: number }>();
 
   flights.forEach((flight) => {
     const price = flight.price.total;
     const bucketIndex = Math.min(bucketCount - 1, Math.floor((price - minPrice) / bucketSize));
     const bucketMin = minPrice + bucketIndex * bucketSize;
     const bucketMax = bucketMin + bucketSize;
-    const range = `$${Math.round(bucketMin)}-$${Math.round(bucketMax)}`;
+    const range = `${Math.round(bucketMin)}-${Math.round(bucketMax)}`;
 
-    const bucket = buckets.get(range) || { total: 0, count: 0 };
+    const bucket = buckets.get(range) || { total: 0, count: 0, min: bucketMin, max: bucketMax };
     bucket.total += price;
     bucket.count += 1;
     buckets.set(range, bucket);
@@ -96,10 +98,11 @@ export const generatePriceData = (flights: Flight[]): PricePoint[] => {
       date,
       price: Math.round(data.total / data.count),
       count: data.count,
+      range: date,
     }))
     .sort((a, b) => {
-      const aMin = parseInt(a.date.split('-')[0].replace('$', ''));
-      const bMin = parseInt(b.date.split('-')[0].replace('$', ''));
+      const aMin = parseInt(a.date.split('-')[0]);
+      const bMin = parseInt(b.date.split('-')[0]);
       return aMin - bMin;
     });
 };

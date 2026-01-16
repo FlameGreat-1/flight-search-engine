@@ -10,7 +10,7 @@ import {
 } from 'recharts';
 import { usePriceGraphData } from './usePriceGraphData';
 import { CustomTooltip } from './CustomTooltip';
-import { formatCurrency } from '@/utils/currency';
+import { useCurrency } from '@/features/currency';
 import { clsx } from 'clsx';
 
 export interface PriceGraphProps {
@@ -20,6 +20,7 @@ export interface PriceGraphProps {
 export const PriceGraph = ({ className }: PriceGraphProps) => {
   const { data, priceRange, averagePrice, lowestPrice, trend, insights, isEmpty } =
     usePriceGraphData();
+  const { convertAndFormat, symbol } = useCurrency();
 
   if (isEmpty) {
     return (
@@ -68,11 +69,15 @@ export const PriceGraph = ({ className }: PriceGraphProps) => {
         <div className="flex gap-4">
           <div className="text-center">
             <div className="text-xs text-text-muted mb-1">Lowest</div>
-            <div className="text-lg font-bold text-success">{formatCurrency(lowestPrice)}</div>
+            <div className="text-lg font-bold text-success">
+              {convertAndFormat(lowestPrice, 'USD')}
+            </div>
           </div>
           <div className="text-center">
             <div className="text-xs text-text-muted mb-1">Average</div>
-            <div className="text-lg font-bold text-accent">{formatCurrency(averagePrice)}</div>
+            <div className="text-lg font-bold text-accent">
+              {convertAndFormat(averagePrice, 'USD')}
+            </div>
           </div>
         </div>
       </div>
@@ -179,7 +184,7 @@ export const PriceGraph = ({ className }: PriceGraphProps) => {
               stroke="#6b7280"
               tick={{ fill: '#9ca3af', fontSize: 12 }}
               tickLine={{ stroke: '#2a2a2a' }}
-              tickFormatter={(value) => `$${value}`}
+              tickFormatter={(value) => `${symbol}${Math.round(value)}`}
             />
             <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#8b5cf6', strokeWidth: 1 }} />
             <ReferenceLine

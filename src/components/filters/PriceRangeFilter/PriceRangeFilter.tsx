@@ -21,14 +21,15 @@ export const PriceRangeFilter = ({
   disabled = false,
   currency = 'USD',
 }: PriceRangeFilterProps) => {
-  const { convert, format } = useCurrency();
-  const [localMin, setLocalMin] = useState(currentMin);
-  const [localMax, setLocalMax] = useState(currentMax);
-
+  const { convert, format, selectedCurrency, exchangeRates } = useCurrency();
+  
   const convertedMin = convert(min, currency);
   const convertedMax = convert(max, currency);
   const convertedCurrentMin = convert(currentMin, currency);
   const convertedCurrentMax = convert(currentMax, currency);
+
+  const [localMin, setLocalMin] = useState(convertedCurrentMin);
+  const [localMax, setLocalMax] = useState(convertedCurrentMax);
 
   useEffect(() => {
     setLocalMin(convertedCurrentMin);
@@ -45,9 +46,18 @@ export const PriceRangeFilter = ({
     setLocalMax(value);
   };
 
+  const convertBackToUSD = (value: number): number => {
+    if (!exchangeRates || selectedCurrency === 'USD') return value;
+    
+    const selectedRate = exchangeRates.rates[selectedCurrency] || 1;
+    return value / selectedRate;
+  };
+
   const handleMouseUp = () => {
     if (localMin !== convertedCurrentMin || localMax !== convertedCurrentMax) {
-      onChange(localMin, localMax);
+      const usdMin = convertBackToUSD(localMin);
+      const usdMax = convertBackToUSD(localMax);
+      onChange(usdMin, usdMax);
     }
   };
 

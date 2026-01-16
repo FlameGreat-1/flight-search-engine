@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useFilterStore } from '@/store';
+import { useCurrency } from '@/features/currency';
 import type { PricePoint, PriceTrend } from '@/types';
 import {
   calculateAveragePrice,
@@ -10,6 +11,7 @@ import {
 
 export const usePriceAnalytics = () => {
   const { filteredResults, priceData, priceTrend } = useFilterStore();
+  const { convertAndFormat } = useCurrency();
 
   const analytics = useMemo(() => {
     if (filteredResults.length === 0) {
@@ -77,11 +79,11 @@ export const usePriceAnalytics = () => {
 
     const savingsVsAverage = analytics.average - trend.lowest;
     if (savingsVsAverage > 0) {
-      messages.push(`Save up to $${Math.round(savingsVsAverage)} vs average price`);
+      messages.push(`Save up to ${convertAndFormat(savingsVsAverage, 'USD')} vs average price`);
     }
 
     return messages;
-  }, [trend, analytics, filteredResults.length]);
+  }, [trend, analytics, filteredResults.length, convertAndFormat]);
 
   return {
     analytics,

@@ -1,4 +1,4 @@
-import { formatCurrency } from '@/utils/currency';
+import { useCurrency } from '@/features/currency';
 import type { TooltipProps } from 'recharts';
 
 interface CustomTooltipPayload {
@@ -10,6 +10,8 @@ interface CustomTooltipPayload {
 }
 
 export const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
+  const { convertAndFormat } = useCurrency();
+
   if (!active || !payload || payload.length === 0) {
     return null;
   }
@@ -25,7 +27,9 @@ export const CustomTooltip = ({ active, payload }: TooltipProps<number, string>)
         </div>
         <div className="flex items-center justify-between gap-4">
           <span className="text-xs text-text-muted">Average Price</span>
-          <span className="text-lg font-bold text-accent">{formatCurrency(data.price)}</span>
+          <span className="text-lg font-bold text-accent">
+            {convertAndFormat(data.price, 'USD')}
+          </span>
         </div>
         <div className="flex items-center justify-between gap-4">
           <span className="text-xs text-text-muted">Flights</span>

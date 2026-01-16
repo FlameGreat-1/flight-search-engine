@@ -1,16 +1,31 @@
 import { useMemo } from 'react';
 import { usePriceAnalytics } from '@/features/analytics';
+import { useCurrency } from '@/features/currency';
 
 export const usePriceGraphData = () => {
   const { chartData, trend, insights, hasData } = usePriceAnalytics();
+  const { convertAndFormat, symbol } = useCurrency();
 
   const formattedData = useMemo(() => {
-    return chartData.map((point) => ({
-      ...point,
-      displayPrice: `$${point.price}`,
-      displayCount: `${point.count} flight${point.count !== 1 ? 's' : ''}`,
-    }));
-  }, [chartData]);
+    return chartData.map((point) => {
+      const isNumericRange = point.range && /^\d+-\d+$/.test(point.range);
+      
+      let displayRange = point.date;
+      if (isNumericRange) {
+        const [min, max] = point.range!.split('-').map(Number);
+        const convertedMin = Math.round(min);
+        const convertedMax = Math.round(max);
+        displayRange = `${symbol}${convertedMin}-${symbol}${convertedMax}`;
+      }
+      
+      return {
+        ...point,
+        date: displayRange,
+        displayPrice: convertAndFormat(point.price, 'USD'),
+        displayCount: `${point.count} flight${point.count !== 1 ? 's' : ''}`,
+      };
+    });
+  }, [chartData, convertAndFormat, symbol]);
 
   const priceRange = useMemo(() => {
     if (chartData.length === 0) {

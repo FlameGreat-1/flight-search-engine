@@ -47,6 +47,13 @@ export interface FlightPrice {
   perAdult: number;
 }
 
+export interface PricePoint {
+  date: string;
+  price: number;
+  count: number;
+  range?: string;
+}
+
 export interface Flight {
   id: string;
   itineraries: Itinerary[];

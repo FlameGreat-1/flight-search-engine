@@ -1,4 +1,5 @@
 import { clsx } from 'clsx';
+import { useCurrency } from '@/features/currency';
 import type { ActiveFilter } from '@/types';
 
 export interface ActiveFiltersProps {
@@ -14,9 +15,23 @@ export const ActiveFilters = ({
   onClearAll,
   className,
 }: ActiveFiltersProps) => {
+  const { convertAndFormat } = useCurrency();
+
   if (filters.length === 0) {
     return null;
   }
+
+  const formatFilterValue = (filter: ActiveFilter): string => {
+    if (filter.type === 'price' && typeof filter.value === 'string') {
+      const match = filter.value.match(/\$(\d+(?:\.\d+)?)\s*-\s*\$(\d+(?:\.\d+)?)/);
+      if (match) {
+        const min = parseFloat(match[1]);
+        const max = parseFloat(match[2]);
+        return `${convertAndFormat(min, 'USD')} - ${convertAndFormat(max, 'USD')}`;
+      }
+    }
+    return String(filter.value);
+  };
 
   return (
     <div className={clsx('space-y-3', className)}>
@@ -40,7 +55,7 @@ export const ActiveFilters = ({
             className="inline-flex items-center gap-2 px-3 py-1.5 bg-accent/10 border border-accent/20 rounded-full text-sm text-accent animate-scale-in"
           >
             <span className="font-medium">{filter.label}:</span>
-            <span>{filter.value}</span>
+            <span>{formatFilterValue(filter)}</span>
             <button
               type="button"
               onClick={() => onRemove(filter.id)}

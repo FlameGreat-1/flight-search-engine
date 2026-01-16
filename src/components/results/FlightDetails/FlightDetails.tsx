@@ -1,4 +1,4 @@
-import { formatCurrency } from '@/utils/currency';
+import { useCurrency } from '@/features/currency';
 import { formatDuration } from '@/utils/duration';
 import { formatDate, formatTime } from '@/utils/date';
 import { Button } from '@/components/common';
@@ -18,6 +18,8 @@ export const FlightDetails = ({
   onBook,
   className,
 }: FlightDetailsProps) => {
+  const { convertAndFormat } = useCurrency();
+
   const handleBook = () => {
     onBook?.(flight);
   };
@@ -49,10 +51,10 @@ export const FlightDetails = ({
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className="text-2xl font-bold text-accent">
-                {formatCurrency(flight.price.total)}
+                {convertAndFormat(flight.price.total, flight.price.currency)}
               </h3>
               <p className="text-sm text-text-muted">
-                {formatCurrency(flight.price.perAdult)} per adult
+                {convertAndFormat(flight.price.perAdult, flight.price.currency)} per adult
               </p>
             </div>
             {onBook && (
@@ -66,13 +68,13 @@ export const FlightDetails = ({
             <div>
               <span className="text-text-muted">Base Fare:</span>
               <span className="ml-2 text-text-primary font-medium">
-                {formatCurrency(flight.price.base)}
+                {convertAndFormat(flight.price.base, flight.price.currency)}
               </span>
             </div>
             <div>
               <span className="text-text-muted">Taxes & Fees:</span>
               <span className="ml-2 text-text-primary font-medium">
-                {formatCurrency(flight.price.fees)}
+                {convertAndFormat(flight.price.fees, flight.price.currency)}
               </span>
             </div>
             <div>
