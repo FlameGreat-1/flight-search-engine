@@ -13,7 +13,6 @@ A modern, responsive flight search engine built with React, TypeScript, and the 
 
 ## 📦 Installation
 
-\`\`\`bash
 # Clone repository
 git clone https://github.com/FlameGreat-1/flight-search-engine
 
@@ -27,25 +26,19 @@ cp .env.example .env
 VITE_AMADEUS_API_KEY=your_key
 VITE_AMADEUS_API_SECRET=your_secret
 VITE_AMADEUS_API_URL=https://test.api.amadeus.com
-\`\`\`
 
 ## 🚀 Development
 
-\`\`\`bash
 npm run dev
-\`\`\`
 
 ## 🏗️ Build
 
-\`\`\`bash
 npm run build
 npm run preview
-\`\`\`
 
 ## 🧪 Testing
 
-\`\`\`bash
 npm run test
 npm run type-check
-\`\`\`
+
 
