@@ -40,7 +40,7 @@ export const ResultsHeader = ({
 
         <div>
           <h2 className="text-xl font-bold text-text-primary">
-            {isLoading ? 'Searching...' : `${count} Flight${count !== 1 ? 's' : ''} Found`}
+            {isLoading ? 'Searching...' : `${count} Flight${count !== 1 ? 's' : ''}`}
           </h2>
           {!isLoading && count > 0 && (
             <p className="text-sm text-text-secondary">

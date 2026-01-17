@@ -31,7 +31,7 @@ export const SearchForm = () => {
   return (
     <form onSubmit={handleSubmit} className="card p-4 space-y-3">
       <div>
-        <h2 className="text-lg font-bold text-text-primary mb-0">Search Flights</h2>
+        <h2 className="text-lg font-bold text-text-primary mb-0">Search</h2>
         <p className="text-xs text-text-secondary leading-tight">Find the best deals for your next trip</p>
       </div>
 
@@ -131,7 +131,7 @@ export const SearchForm = () => {
       </div>
 
       <Button type="submit" variant="primary" size="md" fullWidth isLoading={isLoading}>
-        {isLoading ? 'Searching...' : 'Search Flights'}
+        {isLoading ? 'Searching...' : 'Search'}
       </Button>
     </form>
   );
