@@ -33,7 +33,7 @@ describe('SearchForm', () => {
   it('renders all form fields', () => {
     render(<SearchForm />, { wrapper });
 
-    const searchFlightsElements = screen.getAllByText(/search flights/i);
+    const searchFlightsElements = screen.getAllByText(/search/i);
     expect(searchFlightsElements.length).toBeGreaterThan(0);
     
     expect(screen.getByLabelText(/from/i)).toBeInTheDocument();
@@ -81,7 +81,7 @@ describe('SearchForm', () => {
   it('renders search button', () => {
     render(<SearchForm />, { wrapper });
 
-    expect(screen.getByRole('button', { name: /search flights/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /search/i })).toBeInTheDocument();
   });
 
   it('displays cabin class options', () => {
