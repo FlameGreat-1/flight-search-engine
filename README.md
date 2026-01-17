@@ -2,73 +2,14 @@
 
 A modern, responsive flight search engine built with React, TypeScript, and the Amadeus API.
 
-![Flight Search Engine](screenshot.png)
-
-## 🎯 Assessment Highlights
-
-- **Real-time Flight Search** with 229+ results
-- **Live Price Graph** using Recharts
-- **Complex Filtering** (Price, Stops, Airlines, Times, Duration)
-- **Responsive Design** for mobile and desktop
-- **Type-Safe** with TypeScript
-- **Production-Ready** code architecture
-
 ## 🚀 Live Demo
 
-**[Your Vercel URL]**
+**https://instantflightsearch.vercel.app**
 
 ## 🎥 Video Walkthrough
 
-**[Your Loom URL]**
+**https://www.loom.com/share/5ea42a4730204437813eb7044b715388**
 
-## 🛠️ Tech Stack
-
-- **Frontend:** React 18, TypeScript
-- **State Management:** Zustand
-- **Data Fetching:** React Query (TanStack Query)
-- **Styling:** Tailwind CSS
-- **Charts:** Recharts
-- **API:** Amadeus Self-Service API
-- **Build Tool:** Vite
-- **Deployment:** Vercel
-
-## ✨ Features
-
-### Search
-- Origin/Destination autocomplete
-- Date selection with validation
-- Passenger configuration
-- Cabin class selection
-- Trip type (Round Trip/One Way)
-
-### Results
-- 229 real flights from Amadeus API
-- Detailed flight information
-- Layover details
-- Terminal information
-- Aircraft types
-
-### Filtering
-- **Price Range** slider
-- **Stops** (Direct, 1 Stop, 2+ Stops)
-- **Airlines** multi-select
-- **Departure/Arrival Times** by time of day
-- **Max Duration** slider
-- Active filter chips
-- Clear all filters
-
-### Price Graph
-- Visual price trends
-- Updates in real-time with filters
-- Shows lowest and average prices
-
-### UI/UX
-- Dark theme
-- Smooth animations
-- Loading states
-- Empty states
-- Error handling
-- Responsive design
 
 ## 📦 Installation
 
@@ -108,32 +49,3 @@ npm run test
 npm run type-check
 \`\`\`
 
-
-## 🎨 Design Decisions
-
-- **Dark Theme:** Modern, reduces eye strain
-- **Zustand:** Lightweight state management
-- **React Query:** Efficient data fetching with caching
-- **TypeScript:** Type safety and better DX
-- **Tailwind:** Rapid UI development
-- **Component Architecture:** Modular, reusable components
-
-## 📊 Performance
-
-- Code splitting for optimal bundle size
-- Lazy loading for routes
-- Memoization for expensive computations
-- Debounced search inputs
-- Optimized re-renders
-
-## 🔒 Security
-
-- Environment variables for API keys
-- Input validation
-- XSS protection
-- CORS handling
-
-## 🚀 Live Demo
-[https://instantflightsearch.vercel.app](https://instantflightsearch.vercel.app)
-
-![CI/CD](https://github.com/FlameGreat-1/flight-search-engine/actions/workflows/ci-cd.yml/badge.svg)
